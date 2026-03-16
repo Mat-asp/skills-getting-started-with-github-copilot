@@ -57,6 +57,19 @@ def test_signup_activity_not_found():
     assert response.status_code == 404
     assert response.json() == {"detail": "Activity not found"}
 
+def test_manga_maniacs_activity_exists():
+    # Act: Fetch activities
+    response = client.get("/activities")
+
+    # Assert: Manga Maniacs is present with correct details
+    assert response.status_code == 200
+    data = response.json()
+    assert "Manga Maniacs" in data
+    activity = data["Manga Maniacs"]
+    assert activity["max_participants"] == 15
+    assert "Tuesdays" in activity["schedule"]
+    assert "7:00 PM" in activity["schedule"]
+
 def test_root_redirect():
     # Arrange: Create client that doesn't follow redirects
     client_no_redirect = TestClient(app, follow_redirects=False)
